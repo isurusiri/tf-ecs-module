@@ -1,5 +1,5 @@
 
-# ABL rule
+# ALB rule
 resource "aws_lb_listener_rule" "alb_rule" {
   listener_arn = var.LISTENER_ARN
   priority     = var.PRIORITY

@@ -11,6 +11,6 @@ resource "aws_lb_listener_rule" "alb_rule" {
 
   condition {
     field  = var.CONDITION_FIELD
-    values = ["${var.CONDITION_VALUES}"]
+    values = [var.CONDITION_VALUES]
   }
 }

@@ -6,7 +6,7 @@ resource "aws_ecr_repository" "ecs-service" {
 # get latest active revision
 data "aws_ecs_task_definition" "ecs-service" {
   task_definition = aws_ecs_task_definition.ecs-service-taskdef.family
-  depends_on      = ["aws_ecs_task_definition.ecs-service-taskdef"]
+  depends_on      = [aws_ecs_task_definition.ecs-service-taskdef]
 }
 
 # task definition template
@@ -36,7 +36,7 @@ resource "aws_ecs_task_definition" "ecs-service-taskdef" {
 resource "aws_ecs_service" "ecs-service" {
   name                               = var.APPLICATION_NAME
   cluster                            = var.CLUSTER_ARN
-  task_definition                    = "${aws_ecs_task_definition.ecs-service-taskdef.family}:${max("${aws_ecs_task_definition.ecs-service-taskdef.revision}", "${data.aws_ecs_task_definition.ecs-service.revision}")}"
+  task_definition                    = aws_ecs_task_definition.ecs-service-taskdef.family
   iam_role                           = var.SERVICE_ROLE_ARN
   desired_count                      = var.DESIRED_COUNT
   deployment_minimum_healthy_percent = var.DEPLOYMENT_MINIMUM_HEALTHY_PERCENT
@@ -48,7 +48,7 @@ resource "aws_ecs_service" "ecs-service" {
     container_port   = var.APPLICATION_PORT
   }
 
-  depends_on = ["null_resource.alb_exists"]
+  depends_on = [null_resource.alb_exists]
 }
 
 resource "null_resource" "alb_exists" {

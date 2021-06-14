@@ -13,7 +13,7 @@ data "aws_ecs_task_definition" "ecs-service" {
 data "template_file" "ecs-service" {
   template = file("${path.module}/ecs-service.json")
 
-  vars {
+  vars = {
     APPLICATION_NAME    = var.APPLICATION_NAME
     APPLICATION_PORT    = var.APPLICATION_PORT
     APPLICATION_VERSION = var.APPLICATION_VERSION
@@ -48,11 +48,11 @@ resource "aws_ecs_service" "ecs-service" {
     container_port   = var.APPLICATION_PORT
   }
 
-  depends_on = [null_resource.alb_exists]
+  # depends_on = [null_resource.alb_exists]
 }
 
-resource "null_resource" "alb_exists" {
-  triggers {
-    alb_name = var.ALB_ARN
-  }
-}
+# resource "null_resource" "alb_exists" {
+#   triggers = {
+#     alb_name = var.ALB_ARN
+#   }
+# }

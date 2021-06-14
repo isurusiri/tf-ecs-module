@@ -46,6 +46,6 @@ module "dev-alb-rule" {
   LISTENER_ARN     = module.dev-alb.http_listener_arn
   PRIORITY         = 100
   TARGET_GROUP_ARN = module.dev-service.target_group_arn
-  CONDITION_FIELD  = "host-header"
-  CONDITION_VALUES = ["subdomain.dev-ecs.com"]
+  # CONDITION_FIELD  = "host-header"
+  # CONDITION_VALUES = ["subdomain.dev-ecs.com"]
 }

@@ -3,7 +3,7 @@ resource "aws_alb" "alb" {
   name            = var.ALB_NAME
   internal        = var.INTERNAL
   security_groups = [aws_security_group.alb.id]
-  subnets         = [split(",", var.VPC_SUBNETS)]
+  subnets         = split(",", var.VPC_SUBNETS)
 
   enable_deletion_protection = false
 }

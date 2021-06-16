@@ -11,7 +11,7 @@ module "dev-ecs" {
   SSH_SG         = "dev-ssh-sg"
   LOG_GROUP      = "dev-log-group"
   AWS_ACCOUNT_ID = "1234567890"
-  AWS_REGION     = "eu-west-1"
+  AWS_REGION     = var.AWS_REGION
 }
 
 module "dev-service" {
@@ -22,12 +22,17 @@ module "dev-service" {
   APPLICATION_VERSION = "latest"
   CLUSTER_ARN         = module.dev-ecs.cluster_arn
   SERVICE_ROLE_ARN    = module.dev-ecs.service_role_arn
-  AWS_REGION          = "eu-west-1"
+  AWS_REGION          = var.AWS_REGION
   HEALTHCHECK_MATCHER = "200"
   CPU_RESERVATION     = "1024"
   MEMORY_RESERVATION  = "1024"
   LOG_GROUP           = "dev-log-group"
   DESIRED_COUNT       = "2"
+}
+
+module "dev-cert" {
+  source      = "../modules/certificate"
+  DOMAIN_NAME = "*.isuru.com"
 }
 
 module "dev-alb" {
@@ -36,7 +41,7 @@ module "dev-alb" {
   ALB_NAME           = "dev-alb"
   VPC_SUBNETS        = "subnetId-1,subnetId-2"
   DEFAULT_TARGET_ARN = module.dev-service.target_group_arn
-  DOMAIN             = "*.dev-ecs.com"
+  DOMAIN             = module.dev-cert.certificate_name
   INTERNAL           = false
   ECS_SG             = module.dev-ecs.cluster_sg
 }

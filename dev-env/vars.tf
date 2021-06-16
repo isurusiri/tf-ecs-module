@@ -3,5 +3,5 @@ variable "AWS_REGION" {
 }
 
 variable "PATH_TO_PUBLIC_KEY" {
-  default = "devkey.pub"
+  default = "devkeypair.pub"
 }
